@@ -24,18 +24,32 @@ Maps stocks to price timeseries
 """
 class MarketData:
     def __init__(self):
-        self.timeseries_df=None
+        self.timeseries_map=None
         self.day_ct=None
         self.industries=None
     
-    def initialize(self, num_industries, industry_sizes=None):
+    def initialize(self, num_industries=25, industry_sizes=None):
+        if (industry_sizes is None) or (len(industry_sizes) < 25):
+            industry_sizes=np.ones(num_industries) * 20
+            
         self.industries = []
+        self.timeseries_map = {}
         for i in range(num_industries):
             self.industries.append(Industry(i, random.uniform(1.0001, 1.0004)))
 
+            for j in range(int(industry_sizes[i])):
+                self.timeseries_map[Stock(i+j, i)] = None
 
-        if industry_sizes is None:
-            industry_sizes=np.ones(num_industries) * 10
+
+# Start of execution
+if __name__ == "__main__":
+    print('Starting main')
+
+    data = MarketData()
+
+    data.initialize()
+
+    print(data.timeseries_map)
         
         
 
